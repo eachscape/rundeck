@@ -73,4 +73,5 @@ grails.project.dependency.resolution = {
     }
     
     grails.plugin.location.'webrealms' = "webrealms"
+    grails.plugin.location.'view-modes' = "view-modes"
 }

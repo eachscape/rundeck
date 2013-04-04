@@ -71,6 +71,44 @@
     </div>
 
     <div class="rounded" style="width:600px;">
+        <ul>
+            <li>
+                Beta GUI:
+                <g:if test="${viewModesEnabled}">
+                <g:form action="viewMode">
+                <g:if test="${betaMode}">
+                    <b>Enabled</b>
+                    <g:hiddenField value="false" name="enable"/>
+                    <g:submitButton value="Disable" name="doit"></g:submitButton>
+                </g:if>
+                <g:else>
+                    <i>Disabled</i>
+                    <g:hiddenField value="true" name="enable"/>
+                    <g:submitButton value="Enable" name="doit"></g:submitButton>
+                </g:else>
+                </g:form>
+                </g:if>
+                <g:else>
+                    <i>Disabled</i>
+<g:markdown>
+To enable Beta GUI switching, add this to your Rundeck config file:
+
+    plugin.viewModes.enabled=true
+
+When enabled, you can switch to use the new "beta" style and layout.
+</g:markdown>
+                </g:else>
+<g:markdown>
+You can return to the Admin page to toggle Beta mode.
+
+To persist the Beta mode between restarts, update your Rundeck config file with this:
+
+    plugin.viewModes.mode=beta
+</g:markdown>
+            </li>
+        </ul>
+    </div>
+    <div class="rounded" style="width:600px;">
         Project: <span class="prompt">${session.project.encodeAsHTML()}</span>
         -
         <g:link controller="framework" action="editProject" params="[project:session.project]" class="action textbtn">

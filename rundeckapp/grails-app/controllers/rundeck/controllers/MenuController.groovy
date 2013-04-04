@@ -12,6 +12,7 @@ import com.dtolabs.rundeck.core.plugins.configuration.Validator
 import com.dtolabs.rundeck.server.authorization.AuthConstants
 import grails.converters.JSON
 import groovy.xml.MarkupBuilder
+import org.rundeck.grails.plugins.viewmodes.ViewModesService
 import rundeck.Execution
 import rundeck.ScheduledExecution
 import rundeck.ScheduledExecutionFilter
@@ -33,6 +34,7 @@ class MenuController {
     ExecutionService executionService
     UserService userService
     ScheduledExecutionService scheduledExecutionService
+    ViewModesService viewModesService
     MenuService menuService
     def quartzScheduler
     def list = {
@@ -417,6 +419,22 @@ class MenuController {
         redirect(controller:'menu',action:params.fragment?'jobsFragment':'jobs',params:[compact:params.compact?'true':''])
     }
 
+    def viewMode={
+        Framework framework = frameworkService.getFrameworkFromUserSession(session, request)
+        if (!frameworkService.authorizeApplicationResourceAll(framework, [type: 'project', name: session.project], [AuthConstants.ACTION_ADMIN, AuthConstants.ACTION_READ])) {
+            flash.error = "User ${session.user} unauthorized for: Project Admin"
+            flash.title = "Unauthorized"
+            response.setStatus(403)
+            render(template: '/common/error', model: [:])
+        }
+        def mode = params.mode?:'beta'
+        if(params.enable == 'true'){
+            viewModesService.mode= mode
+        }else{
+            viewModesService.mode=null
+        }
+        return redirect(action: 'admin',controller: 'menu')
+    }
     def admin={
         Framework framework = frameworkService.getFrameworkFromUserSession(session, request)
         if (!frameworkService.authorizeApplicationResourceAll(framework,[type:'project',name:session.project],[AuthConstants.ACTION_ADMIN, AuthConstants.ACTION_READ])) {
@@ -475,6 +493,8 @@ class MenuController {
                 defaultFileCopy: defaultFileCopy,
                 nodeExecDescriptions: nodeexecdescriptions,
                 fileCopyDescriptions: filecopydescs,
+                betaMode: viewModesService.mode=='beta',
+                viewModesEnabled: viewModesService.enabled
             ]
         }
     }

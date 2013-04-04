@@ -87,8 +87,17 @@ log4j={
 
     warn 'org.mortbay.log'
     warn 'grails.app.filters.AuthorizationFilters'
-    
+//    debug 'ViewModesGrailsPlugin'
+//    debug 'org.rundeck.grails.plugins.viewmodes'
 //    info 'com.dtolabs.rundeck.core.authorization.providers.SAREAuthorization'
 }
-
+environments{
+    development{
+        plugin.viewModes.enabled = true
+        plugin.viewModes.mode = 'beta'
+    }
+    production{
+        plugin.viewModes.enabled = false
+    }
+}
 
