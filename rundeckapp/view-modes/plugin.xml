@@ -1,0 +1,36 @@
+<plugin name='view-modes' version='0.1' grailsVersion='1.3.7 &gt; *'>
+  <author>Greg Schueler</author>
+  <authorEmail>greg@dtosolutions.com</authorEmail>
+  <title>view-modes</title>
+  <description>\
+Dynamically switch to use a secondary set of views and templates.
+
+Either create a new views subdirectory "grails-app/views/*mode*"
+containing the views, or create gsp files named "view.*mode*.gsp".
+
+When "/controller/view.gsp" is to be loaded, then grails will look in "/mode/controller/view.gsp" and
+"/controller/view.mode.gsp" first before falling back to the original. Also works for templates ("_template.gsp").
+
+The View Mode can be changed dynamically or disabled (set to null), and can be controlled via a
+config value: `plugin.viewModes.mode`.
+
+The plugin must be enabled with `plugin.viewModes.enabled=true`.  In war deployment,
+it enables gsp reloading which may have a performance penalty and is governed by the
+`grails.gsp.reload.interval`. For this reason it must be explicitly enabled with the
+`plugin.viewModes.enabled` config.
+
+Use `ViewModesService` in a controller to change the mode in the running app.
+</description>
+  <documentation>https://github.com/dtolabs/rundeck</documentation>
+  <resources>
+    <resource>BuildConfig</resource>
+    <resource>Config</resource>
+    <resource>DataSource</resource>
+    <resource>UrlMappings</resource>
+    <resource>org.rundeck.grails.plugins.viewmodes.ViewModesService</resource>
+  </resources>
+  <dependencies>
+    <plugin name='groovyPages' version='1.3.7' />
+  </dependencies>
+  <behavior />
+</plugin>
